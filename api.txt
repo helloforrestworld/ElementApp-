@@ -1,0 +1,3 @@
+https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/ratings 评论接口
+https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/goods 商品接口
+https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/sell  商家接口
