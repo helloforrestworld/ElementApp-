@@ -33,6 +33,9 @@
       <div class="detail-wrapper">
         <div class="detail-main">
           <h1 class="name">{{seller.name}}</h1>
+          <div class="star-wrapper">
+            <star :size="48" :score="seller.score"></star>
+          </div>
         </div>
       </div>
       <!-- css stickfooter -->
@@ -43,6 +46,7 @@
   </div>
 </template>
 <script>
+import star from '@/components/star/star';
 export default {
   name: 'sell-header',
   props: {
@@ -54,6 +58,9 @@ export default {
     return {
       datailShow: false
     };
+  },
+  components: {
+    star
   },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']; // 活动图标className
@@ -229,6 +236,11 @@ export default {
           font-size: 16px;
           text-align: center;
           font-weight: 700;
+        }
+        .star-wrapper{
+          margin-top: 18px;
+          padding: 2px 0;
+          text-align: center;
         }
       }
     }
