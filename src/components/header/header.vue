@@ -15,16 +15,30 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div class="support-count" v-if="seller.supports">
+      <div class="support-count" v-if="seller.supports" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="board-wrapper">
+    <div class="board-wrapper" @click="showDetail">
       <span class="board-title"></span><span class="board-text">
         {{seller.bulletin}}
       </span>
       <i class="icon-keyboard_arrow_right"></i>
+    </div>
+    <div class="background">
+      <img :src="seller.avatar" width="100%" height="100%">
+    </div>
+    <div class="datail" v-show="datailShow">
+      <div class="detail-wrapper">
+        <div class="detail-main">
+          <h1 class="name">{{seller.name}}</h1>
+        </div>
+      </div>
+      <!-- css stickfooter -->
+      <div class="detail-close">
+        <i class="icon-close"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -37,18 +51,30 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      datailShow: false
+    };
   },
   created() {
-    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']; // 活动图标className
+  },
+  methods: {
+    showDetail() { // 显示商家详情
+      this.datailShow = true;
+    },
+    hideDetail() { // 隐藏商家详情
+      this.datailShow = true;
+    }
   }
 };
 </script>
 <style lang="less" scoped>
 @import '../../common/less/mixin.less';
 #sell-header{
+  position: relative;
+  overflow: hidden;
+  background: rgba(7, 17, 27, 0.5);
   color: #fff;
-  background-color: #999;
   .content-wrapper{
     position: relative;
     padding: 24px 12px 18px 24px;
@@ -143,9 +169,75 @@ export default {
     }
   }
   .board-wrapper{
-    .board-title{}
-    .board-text{}
-    .icon-keyboard_arrow_right{}
+    position: relative;
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 22px 0px 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: rgba(7, 17, 27, 0.2);
+    .board-title{
+      vertical-align: top;
+      margin-top: 8px;
+      display: inline-block;
+      width: 22px;
+      height: 12px;
+      background-repeat: no-repeat;
+      background-size: 22px 12px;
+      .bg-image('bulletin');
+    }
+    .board-text{
+      vertical-align: top;
+      margin: 0px 4px;
+      font-size: 10px;
+    }
+    .icon-keyboard_arrow_right{
+      position: absolute;
+      font-size: 10px;
+      right: 12px;
+      top: 10px;
+    }
+  }
+  .background{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(10px);
+  }
+  .datail{
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(7,17,27,0.8);
+    .detail-wrapper{
+      min-height: 100%;
+      width: 100%;
+      overflow: hidden;
+      .detail-main{
+        margin-top: 64px;
+        padding-bottom: 64px;
+        .name{
+          line-height: 16px;
+          font-size: 16px;
+          text-align: center;
+          font-weight: 700;
+        }
+      }
+    }
+    .detail-close{
+      margin: -64px auto 0 auto;
+      width: 32px;
+      height: 32px;
+      font-size: 32px;
+    }
   }
 }
 </style>
