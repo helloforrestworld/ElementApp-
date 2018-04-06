@@ -5,7 +5,15 @@ let store = new Vuex.Store({
   state: {
     seller: {}, // seller数据
     goods: [], // 本店商品数据
-    cartGoods: [] // 购物车数据
+    cartGoods: [], // 购物车数据
+    balls: [ // 购物车小球
+      {show: false},
+      {show: false},
+      {show: false},
+      {show: false},
+      {show: false}
+    ],
+    dropBalls: [] // 正在移动的购物车小球
   },
   mutations: {
     initSeller(state, data) { // 提交修改seller
@@ -40,6 +48,25 @@ let store = new Vuex.Store({
           return;
         };
       });
+    },
+    drop(state, el) { // 触发小球飞入
+      let balls = state.balls;
+      let dropBalls = state.dropBalls;
+      for (var i = 0; i < balls.length; i++) {
+        if (!balls[i].show) {
+          balls[i].el = el;
+          balls[i].show = true;
+          dropBalls.push(balls[i]);
+          return;
+        }
+      }
+    },
+    afterDrop(state, el) { // 释放小球
+      let ball = state.dropBalls.shift();
+      if (ball.show) {
+        ball.show = false;
+        el.style.display = 'none';
+      }
     }
   },
   actions: {

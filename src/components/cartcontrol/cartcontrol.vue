@@ -6,7 +6,7 @@
       </div>
     </transition>
     <div class="cart-count"  v-show="food.count > 0">{{food.count}}</div>
-    <div class="cart-add icon-add_circle" @click="addGood"></div>
+    <div class="cart-add icon-add_circle" @click.stop.prevent="addGood"></div>
   </div>
 </template>
 <script>
@@ -24,8 +24,9 @@ export default {
     return {};
   },
   methods: {
-    addGood() { // 添加数量
-      this.$store.commit('addCartGoods', this.food);
+    addGood(e) { // 添加数量
+      this.$store.commit('addCartGoods', this.food); // 添加商品
+      this.$store.commit('drop', e.target); // 小球飞入
     },
     removeGood() { // 减少数量
       this.$store.commit('decreaseCartGoods', this.food);
