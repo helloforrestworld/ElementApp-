@@ -6,7 +6,7 @@
       <router-link activeClass="nav-active" class="tab-item" tag="div" :to="{ name: 'ratings'}">评论</router-link>
       <router-link activeClass="nav-active" class="tab-item" tag="div" :to="{ name: 'seller'}">商家</router-link>
     </div>
-    <router-view class="content"></router-view>
+    <router-view class="content" :seller="seller"></router-view>
   </div>
 </template>
 

@@ -33,10 +33,12 @@
       </li>
     </ul>
   </div>
+  <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 </div>
 </template>
 <script>
 import Bscroll from 'better-scroll';
+import shopcart from '../shopcart/shopcart';
 export default {
   name: 'goods',
   props: {
@@ -50,6 +52,9 @@ export default {
       heights: [], // 列表到顶部的高度
       scrollY: 0 // 当前食物列表tranlateY
     };
+  },
+  components: {
+    shopcart
   },
   created() { // 获取商品数据
     this.$http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/goods')
