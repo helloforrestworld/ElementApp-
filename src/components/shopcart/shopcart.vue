@@ -12,8 +12,8 @@
         <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
-        <div class="pay">
-          {{minPrice}}元起送
+        <div class="pay" :class="payClass">
+          {{payDesc}}
         </div>
       </div>
     </div>
@@ -23,20 +23,12 @@
 export default {
   name: 'shopcart',
   props: {
-    deliveryPrice: {
-      type: Number,
-      default: 0
-    },
-    minPrice: {
-      type: Number,
-      default: 0
-    },
     checkGoods: {
       type: Array,
       default() {
         return [
           {
-            price: 10,
+            price: 20,
             count: 1
           }
         ];
@@ -47,19 +39,37 @@ export default {
     return {};
   },
   computed: {
-    totalCount() {
-      let count = 0;
-      this.checkGoods.forEach((good) => {
-        count += good.count;
-      });
-      return count;
+    deliveryPrice() { // 送餐费
+      return this.$store.state.seller.deliveryPrice;
     },
-    totalPrice() {
-      let price = 0;
-      this.checkGoods.forEach((good) => {
-        price += good.price * good.count;
-      });
-      return price;
+    minPrice() { // 起送价
+      return this.$store.state.seller.minPrice;
+    },
+    cartGoods() { // 购物车数据
+      return this.$store.state.seller.cartGoods;
+    },
+    totalCount() { // 选中商品总数
+      return this.$store.getters.totalCount;
+    },
+    totalPrice() { // 选中商品总价
+      return this.$store.getters.totalPrice;
+    },
+    payDesc() { // 结算按钮文字
+      if (this.totalPrice === 0) {
+        return `${this.minPrice}元起送`;
+      } else if (this.totalPrice < this.minPrice) {
+        let dis = this.minPrice - this.totalPrice;
+        return `还差${dis}元起送`;
+      } else {
+        return `去结算`;
+      }
+    },
+    payClass() { // 结算按钮样式
+      if (this.totalPrice < this.minPrice) {
+        return 'not-enough';
+      } else {
+        return 'enough';
+      }
     }
   }
 };
@@ -155,7 +165,13 @@ export default {
           text-align: center;
           font-size: 12px;
           font-weight: 700;
-          background: #2b333b;
+          &.not-enough{
+            background: #2b333b;
+          }
+          &.enough{
+            background: #00b43c;
+            color: #fff;
+          }
         }
       }
     }

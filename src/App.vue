@@ -17,17 +17,13 @@ export default {
   components: {
     sellHeader
   },
-  data() {
-    return {
-      seller: {} // 商家数据
-    };
-  },
   created() {
-    // 请求商家数据
-    this.$http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/sell')
-      .then((response) => {
-        this.seller = response.data.seller;
-      });
+    this.$store.dispatch('getSellerData'); // 请求商家数据
+  },
+  computed: {
+    seller() { // 商家数据
+      return this.$store.state.seller;
+    }
   }
 };
 </script>

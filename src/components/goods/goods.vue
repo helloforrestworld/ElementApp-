@@ -27,18 +27,22 @@
               <div class="price">
                 <span class="now">￥{{food.price}}</span><span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
               </div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol :food="food"></cartcontrol>
+              </div>
             </div>
           </li>
         </ul>
       </li>
     </ul>
   </div>
-  <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+  <shopcart></shopcart>
 </div>
 </template>
 <script>
 import Bscroll from 'better-scroll';
 import shopcart from '../shopcart/shopcart';
+import cartcontrol from '../cartcontrol/cartcontrol';
 export default {
   name: 'goods',
   props: {
@@ -48,26 +52,27 @@ export default {
   },
   data() {
     return {
-      goods: [], // 商品数据
       heights: [], // 列表到顶部的高度
       scrollY: 0 // 当前食物列表tranlateY
     };
   },
   components: {
-    shopcart
+    shopcart,
+    cartcontrol
   },
   created() { // 获取商品数据
-    this.$http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/goods')
-      .then((response) => {
-        this.goods = response.data.goods; // 更新数据
-        this.$nextTick(() => { // DOM渲染完成初始化滚动区域
-          this._initScroll();
-          this._calculateHeight();
-        });
+    this.$store.dispatch('getGoodsData').then((res) => {
+      this.$nextTick(() => { // DOM渲染完成初始化滚动区域
+        this._initScroll();
+        this._calculateHeight();
       });
+    });
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']; // 活动图标className
   },
   computed: {
+    goods() { // 商品数据
+      return this.$store.state.goods;
+    },
     currentIndex() { // 计算当前分类的Index
       for (var i = 0; i < this.heights.length; i++) {
         if (i === this.heights.length) {
@@ -89,6 +94,7 @@ export default {
         click: true
       });
       this.foodsScroll = new Bscroll(this.$refs.foodsWrapper, {
+        click: true,
         probeType: 3
       });
       this.foodsScroll.on('scroll', (pos) => {
@@ -183,6 +189,7 @@ export default {
             }
             ul {
                 .food-item {
+                    position: relative;
                     display: flex;
                     margin: 18px;
                     padding-bottom: 18px;
@@ -233,6 +240,11 @@ export default {
                                 font-size: 10px;
                                 color: rgb(147,153,159);
                             }
+                        }
+                        .cartcontrol-wrapper{
+                          position: absolute;
+                          right: 0;
+                          bottom: 12px;
                         }
                     }
                 }
