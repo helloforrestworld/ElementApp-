@@ -11,8 +11,8 @@
         <div class="price" :class="{'highlight': totalPrice > 0}">{{totalPrice}}元</div>
         <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
-      <div class="content-right" @click.stop.prevent>
-        <div class="pay" :class="payClass">
+      <div class="content-right">
+        <div class="pay" :class="payClass" @click.stop.prevent="pay">
           {{payDesc}}
         </div>
       </div>
@@ -27,12 +27,12 @@
       </div>
     </div>
     <transition name="fold">
-      <div class="shopcart-list" v-show="listShow">
+      <div class="shopcart-list" v-show="!fold">
         <div class="list-header">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空购物车</span>
+          <span class="empty" @click="removeAllCart">清空购物车</span>
         </div>
-        <div class="list-content">
+        <div class="list-content" ref="listContent">
           <ul>
             <li class="food" v-for="(food, index) in cartGoods" :key="index">
               <span class="name">{{food.name}}</span>
@@ -40,17 +40,21 @@
                 <span>￥{{food.price * food.count}}</span>
               </div>
               <div class="cartcontrol-wrapper">
-                <cartcontrol></cartcontrol>
+                <cartcontrol :food="food"></cartcontrol>
               </div>
             </li>
           </ul>
         </div>
       </div>
     </transition>
+    <transition name="fade">
+      <div class="list-mask" v-show="!fold" @click="foldList"></div>
+    </transition>
   </div>
 </template>
 <script>
 import cartcontrol from '../cartcontrol/cartcontrol';
+import Bscroll from 'better-scroll';
 export default {
   name: 'shopcart',
   props: {
@@ -59,8 +63,8 @@ export default {
       default() {
         return [
           {
-            price: 20,
-            count: 1
+            price: 0,
+            count: 0
           }
         ];
       }
@@ -73,6 +77,27 @@ export default {
     return {
       fold: true // 默认折叠购物车详情
     };
+  },
+  watch: {
+    'totalCount': function(count) { // 购物车商品减为零时 自动收起
+      if (count === 0) {
+        this.fold = true;
+      }
+    },
+    'fold': function(fold) { // 监控折叠情况 更新betterScroll
+      if (fold) {
+        this.$nextTick(() => {
+          if (!this.listScroll) { // 初始化
+            let wrap = this.$refs.listContent;
+            this.listScroll = new Bscroll(wrap, {
+              click: true
+            });
+          } else { // 更新DOM后重新计算滑动
+            this.listScroll.refresh();
+          }
+        });
+      }
+    }
   },
   computed: {
     deliveryPrice() { // 送餐费
@@ -112,14 +137,6 @@ export default {
     },
     dropBalls() { // 正在移动的购物车小球
       return this.$store.state.dropBalls;
-    },
-    listShow() { // 购物车详情显示隐藏
-      if (this.totalCount === 0) {
-        this.fold = true;
-        return false;
-      }
-      let show = !this.fold;
-      return show;
     }
   },
   methods: {
@@ -158,11 +175,21 @@ export default {
     foldList() { // 购物车折叠
       if (!this.totalCount) return;
       this.fold = !this.fold;
+    },
+    removeAllCart() { // 清空购物车
+      this.$store.commit('removeAllCart');
+    },
+    pay() { // 支付
+      if (this.totalPrice < this.minPrice) {
+        return;
+      };
+      alert(`支付了${this.totalPrice}元`);
     }
   }
 };
 </script>
 <style lang="less" scoped>
+@import '../../common/less/mixin.less';
   .shopcart{
     position: fixed;
     z-index: 99;
@@ -285,20 +312,12 @@ export default {
       top: 0;
       z-index: -1;
       width: 100%;
+      transform: translate3d(0,-100%,0);
+      &.fold-enter,&.fold-leave-to{
+        transform: translate3d(0,0,0);
+      }
       &.fold-enter-active,&.fold-leave-active{
-        transition: all .3s linear;
-      }
-      &.fold-enter{
-        transform: translate3d(0,0,0);
-      }
-      &.fold-enter-to{
-        transform: translate3d(0,-100%,0);
-      }
-      &.fold-leave{
-        transform: translate3d(0,-100%,0);
-      }
-      &.fold-leave-to{
-        transform: translate3d(0,0,0);
+        transition: all 0.5s;
       }
       .list-header{
         height: 40px;
@@ -318,7 +337,54 @@ export default {
         }
       }
       .list-content{
-        
+        padding: 0 18px;
+        max-height: 217px;
+        overflow: hidden;
+        background: #fff;
+        .food{
+          position: relative;
+          padding: 12px 0;
+          box-sizing: border-box;
+          .border-1px(rgba(7, 17, 27, 0.1));
+          .name{
+            line-height: 24px;
+            font-size: 14px;
+            color: rgb(7, 17, 27);
+          }
+          .price{
+            position: absolute;
+            right: 90px;
+            bottom: 12px;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: 700;
+            color: rgb(240, 20, 20);
+          }
+          .cartcontrol-wrapper{
+            position: absolute;
+            right: 0;
+            top:6px;
+            height: 100%;
+          }
+        }
+      }
+    }
+    .list-mask{
+      position:fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 1;
+      background: rgba(7, 17, 27, 0.6);
+      backdrop-filter:blur(10px);
+      &.fade-enter-active,&.fade-leave-active{
+        transition: .3s all;
+      }
+      &.fade-enter,&.fade-leave-to{
+        opacity: 0;
+        background: rgba(7, 17, 27, 0);
       }
     }
   }

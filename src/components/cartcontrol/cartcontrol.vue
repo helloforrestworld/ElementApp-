@@ -6,7 +6,7 @@
       </div>
     </transition>
     <div class="cart-count"  v-show="food.count > 0">{{food.count}}</div>
-    <div class="cart-add icon-add_circle" @click.stop.prevent="addGood"></div>
+    <div class="cart-add icon-add_circle" @click="addGood"></div>
   </div>
 </template>
 <script>
@@ -39,6 +39,7 @@ export default {
     font-size: 0;
     height: 24px;
     .cart-decrease, .cart-add{
+      vertical-align: top;
       display: inline-block;
       padding: 6px;
       line-height: 24px;

@@ -67,6 +67,12 @@ let store = new Vuex.Store({
         ball.show = false;
         el.style.display = 'none';
       }
+    },
+    removeAllCart(state) { // 清空购物车
+      state.cartGoods.forEach((item) => {
+        item.count = 0;
+      });
+      state.cartGoods = [];
     }
   },
   actions: {
