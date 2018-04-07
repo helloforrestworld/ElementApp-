@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="foldList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight': totalCount > 0}">
@@ -11,7 +11,7 @@
         <div class="price" :class="{'highlight': totalPrice > 0}">{{totalPrice}}元</div>
         <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
-      <div class="content-right">
+      <div class="content-right" @click.stop.prevent>
         <div class="pay" :class="payClass">
           {{payDesc}}
         </div>
@@ -26,9 +26,31 @@
         </transition>
       </div>
     </div>
+    <transition name="fold">
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-header">
+          <h1 class="title">购物车</h1>
+          <span class="empty">清空购物车</span>
+        </div>
+        <div class="list-content">
+          <ul>
+            <li class="food" v-for="(food, index) in cartGoods" :key="index">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>￥{{food.price * food.count}}</span>
+              </div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
+import cartcontrol from '../cartcontrol/cartcontrol';
 export default {
   name: 'shopcart',
   props: {
@@ -44,8 +66,13 @@ export default {
       }
     }
   },
+  components: {
+    cartcontrol
+  },
   data() {
-    return {};
+    return {
+      fold: true // 默认折叠购物车详情
+    };
   },
   computed: {
     deliveryPrice() { // 送餐费
@@ -55,7 +82,7 @@ export default {
       return this.$store.state.seller.minPrice;
     },
     cartGoods() { // 购物车数据
-      return this.$store.state.seller.cartGoods;
+      return this.$store.state.cartGoods;
     },
     totalCount() { // 选中商品总数
       return this.$store.getters.totalCount;
@@ -85,6 +112,14 @@ export default {
     },
     dropBalls() { // 正在移动的购物车小球
       return this.$store.state.dropBalls;
+    },
+    listShow() { // 购物车详情显示隐藏
+      if (this.totalCount === 0) {
+        this.fold = true;
+        return false;
+      }
+      let show = !this.fold;
+      return show;
     }
   },
   methods: {
@@ -119,6 +154,10 @@ export default {
     },
     afterDrop(el) {
       this.$store.commit('afterDrop', el);
+    },
+    foldList() { // 购物车折叠
+      if (!this.totalCount) return;
+      this.fold = !this.fold;
     }
   }
 };
@@ -238,6 +277,48 @@ export default {
           background: rgb(0, 160, 220);
           transition: all 0.4s linear;
         }
+      }
+    }
+    .shopcart-list{
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: -1;
+      width: 100%;
+      &.fold-enter-active,&.fold-leave-active{
+        transition: all .3s linear;
+      }
+      &.fold-enter{
+        transform: translate3d(0,0,0);
+      }
+      &.fold-enter-to{
+        transform: translate3d(0,-100%,0);
+      }
+      &.fold-leave{
+        transform: translate3d(0,-100%,0);
+      }
+      &.fold-leave-to{
+        transform: translate3d(0,0,0);
+      }
+      .list-header{
+        height: 40px;
+        line-height: 40px;
+        padding: 0px 18px;
+        background: #f3f5f7;
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+        .title{
+          float: left;
+          font-size: 14px;
+          color:rgb(7,17,27);
+        }
+        .empty{
+          float: right;
+          font-size: 12px;
+          color: rgb(0, 160, 220);
+        }
+      }
+      .list-content{
+        
       }
     }
   }
