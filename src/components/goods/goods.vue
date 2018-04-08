@@ -14,7 +14,7 @@
       <li class="food-list food-list-hook" v-for="(item, index) in goods" :key="index">
         <h1 class="title">{{item.name}}</h1>
         <ul>
-          <li class="border-1px food-item" v-for="(food, num) in item.foods" :key="num">
+          <li class="border-1px food-item" v-for="(food, num) in item.foods" :key="num" @click="showDetail(food)">
             <div class="icon">
               <img :src="food.icon" width="57" height="57">
             </div>
@@ -37,12 +37,14 @@
     </ul>
   </div>
   <shopcart></shopcart>
+  <fooddetail ref="foodDetail" :food="detailFood"></fooddetail>
 </div>
 </template>
 <script>
 import Bscroll from 'better-scroll';
 import shopcart from '../shopcart/shopcart';
 import cartcontrol from '../cartcontrol/cartcontrol';
+import fooddetail from '../fooddetail/fooddetail';
 export default {
   name: 'goods',
   props: {
@@ -53,12 +55,14 @@ export default {
   data() {
     return {
       heights: [], // 列表到顶部的高度
-      scrollY: 0 // 当前食物列表tranlateY
+      scrollY: 0, // 当前食物列表tranlateY
+      detailFood: {} // 当前需要查看详情的商品
     };
   },
   components: {
     shopcart,
-    cartcontrol
+    cartcontrol,
+    fooddetail
   },
   created() { // 获取商品数据
     this.$store.dispatch('getGoodsData').then((res) => {
@@ -87,7 +91,12 @@ export default {
   methods: {
     clickMenutoScroll(index) { // 点击foodMenu
       let lists = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
-      this.foodsScroll.scrollToElement(lists[index], 300);
+      this.foodsScroll && this.foodsScroll.scrollToElement(lists[index], 300);
+    },
+    showDetail(food) { // 查看商品详情
+      let refDatail = this.$refs.foodDetail;
+      this.detailFood = food;
+      refDatail.showDetail();
     },
     _initScroll() { // 初始化滚动区域
       this.menuScroll = new Bscroll(this.$refs.menuWrapper, {
