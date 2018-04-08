@@ -250,7 +250,7 @@ export default {
                 opacity: 1;
                 &.fade-enter-active,
                 &.fade-leave-active {
-                    transition: all 0.2 linear;
+                    transition: all 0.3 linear;
                 }
                 &.fade-enter,
                 &.fade-leave-to {

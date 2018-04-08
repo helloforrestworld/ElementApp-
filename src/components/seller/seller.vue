@@ -1,6 +1,10 @@
 <template>
-  <div id="seller">
-    我是seller
+  <div class="seller">
+    <div class="seller-content">
+      <div class="overview">
+        我是seller
+      </div>
+    </div>
   </div>
 </template>
 <script>

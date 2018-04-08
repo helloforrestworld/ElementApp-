@@ -99,10 +99,13 @@ export default {
       refDatail.showDetail();
     },
     _initScroll() { // 初始化滚动区域
-      this.menuScroll = new Bscroll(this.$refs.menuWrapper, {
+      let menuWrapper = this.$refs.menuWrapper;
+      let foodsWrapper = this.$refs.foodsWrapper;
+      if (!menuWrapper || !foodsWrapper) return;
+      this.menuScroll = new Bscroll(menuWrapper, {
         click: true
       });
-      this.foodsScroll = new Bscroll(this.$refs.foodsWrapper, {
+      this.foodsScroll = new Bscroll(foodsWrapper, {
         click: true,
         probeType: 3
       });
@@ -112,7 +115,9 @@ export default {
     },
     _calculateHeight() { // 计算每个分类底部到页面顶部的距离
       let height = 0;
-      let lists = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+      let foodsWrapper = this.$refs.foodsWrapper;
+      if (!foodsWrapper) return;
+      let lists = foodsWrapper.getElementsByClassName('food-list-hook');
       for (var i = 0; i < lists.length; i++) {
         height += lists[i].clientHeight;
         this.heights.push(height);
@@ -215,7 +220,6 @@ export default {
                         flex: 1;
                         .name {
                             margin: 2px 0 8px;
-                            height: 14px;
                             line-height: 14px;
                             font-size: 14px;
                             color: rgb(7,17,27);

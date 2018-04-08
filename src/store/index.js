@@ -5,6 +5,7 @@ let store = new Vuex.Store({
   state: {
     seller: {}, // seller数据
     goods: [], // 本店商品数据
+    ratings: [], // 对本店的评论数据
     cartGoods: [], // 购物车数据
     balls: [ // 购物车小球
       {show: false},
@@ -21,6 +22,9 @@ let store = new Vuex.Store({
     },
     initGoods(state, data) { // 提交修改goods
       state.goods = data;
+    },
+    initRatings(state, data) { // 提交修改商家评论数据
+      state.ratings = data;
     },
     addCartGoods(state, data) { // 添加到购物车
       let cartGoods = state.cartGoods;
@@ -81,6 +85,9 @@ let store = new Vuex.Store({
       http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/sell')
         .then((response) => {
           commit('initSeller', response.data.seller);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     getGoodsData({commit}) { // 获取本店商品数据
@@ -88,6 +95,19 @@ let store = new Vuex.Store({
       return http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/goods')
         .then((response) => {
           commit('initGoods', response.data.goods);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getRatings({commit}) { // 获取本店评论数据
+      let http = this._vm.$http;
+      return http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/ratings')
+        .then((response) => {
+          commit('initRatings', response.data.ratings);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
   },

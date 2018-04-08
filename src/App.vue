@@ -21,7 +21,7 @@ export default {
     this.$store.dispatch('getSellerData'); // 请求商家数据
   },
   computed: {
-    seller() { // 商家数据
+    seller() { // 商家信息
       return this.$store.state.seller;
     }
   }
