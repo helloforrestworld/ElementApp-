@@ -1,8 +1,10 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import {urlParse} from '@/common/js/utils';
 Vue.use(Vuex);
 let store = new Vuex.Store({
   state: {
+    sellerId: 0, // 本店id
     seller: {}, // seller数据
     goods: [], // 本店商品数据
     ratings: [], // 对本店的评论数据
@@ -17,6 +19,9 @@ let store = new Vuex.Store({
     dropBalls: [] // 正在移动的购物车小球
   },
   mutations: {
+    initSellerId(state, search) { // 初始化店铺id
+      state.sellerId = urlParse(search).id;
+    },
     initSeller(state, data) { // 提交修改seller
       state.seller = data;
     },
@@ -80,9 +85,9 @@ let store = new Vuex.Store({
     }
   },
   actions: {
-    getSellerData({commit}) { // 获取seller数据
+    getSellerData({commit, state}) { // 获取seller数据
       let http = this._vm.$http;
-      http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/sell')
+      http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/seller', {params: {id: state.sellerId}})
         .then((response) => {
           commit('initSeller', response.data.seller);
         })
@@ -92,7 +97,7 @@ let store = new Vuex.Store({
     },
     getGoodsData({commit}) { // 获取本店商品数据
       let http = this._vm.$http;
-      return http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/goods')
+      return http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/goods', {params: {id: 'zhoufang1411'}})
         .then((response) => {
           commit('initGoods', response.data.goods);
         })
@@ -102,7 +107,7 @@ let store = new Vuex.Store({
     },
     getRatings({commit}) { // 获取本店评论数据
       let http = this._vm.$http;
-      return http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/ratings')
+      return http.get('https://www.easy-mock.com/mock/5aa7ebafdee46352178289fb/example/api/ratings', {params: {id: 'zhoufang1411'}})
         .then((response) => {
           commit('initRatings', response.data.ratings);
         })

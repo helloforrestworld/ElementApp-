@@ -64,14 +64,11 @@ export default {
     cartcontrol,
     fooddetail
   },
-  created() { // 获取商品数据
-    this.$store.dispatch('getGoodsData').then((res) => {
-      this.$nextTick(() => { // DOM渲染完成初始化滚动区域
-        this._initScroll();
-        this._calculateHeight();
-      });
-    });
+  created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']; // 活动图标className
+    this.$store.dispatch('getGoodsData').then(() => {
+      this._initFoodScroll();
+    });
   },
   computed: {
     goods() { // 商品数据
@@ -86,6 +83,7 @@ export default {
           return i;
         };
       };
+      return 0;
     }
   },
   methods: {
@@ -122,6 +120,12 @@ export default {
         height += lists[i].clientHeight;
         this.heights.push(height);
       };
+    },
+    _initFoodScroll() { // DOM渲染完成初始化滚动区域
+      this.$nextTick(() => {
+        this._initScroll();
+        this._calculateHeight();
+      });
     }
   }
 };

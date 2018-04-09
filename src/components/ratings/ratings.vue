@@ -19,7 +19,7 @@
             <span class="score">{{seller.foodScore}}</span>
           </div>
           <div class="delivery-wrapper">
-            <span class="title">送达事件</span>
+            <span class="title">送达时间</span>
             <span class="time">{{seller.deliveryTime}}分钟</span>
           </div>
         </div>
@@ -74,22 +74,9 @@ export default {
     ratingselect
   },
   created() {
-    // 初始化评论过滤类型
-    this.onlyContent = true;
-    this.selectType = ALL;
     // 获取商家评分数据
     this.$store.dispatch('getRatings').then((response) => {
-      if (!this.scroll) {
-        this.$nextTick(() => {
-          let ratingWrap = this.$refs.ratingWrap;
-          if (!ratingWrap) return;
-          this.scroll = new BScroll(ratingWrap, {
-            click: true
-          });
-        });
-      } else {
-        this.scroll.refresh();
-      }
+      this._initScroll();
     });
   },
   filters: {
@@ -128,6 +115,19 @@ export default {
     },
     tabOnlyHandler() {
       this.onlyContent = !this.onlyContent;
+    },
+    _initScroll() {
+      if (!this.scroll) {
+        this.$nextTick(() => {
+          let ratingWrap = this.$refs.ratingWrap;
+          if (!ratingWrap) return;
+          this.scroll = new BScroll(ratingWrap, {
+            click: true
+          });
+        });
+      } else {
+        this.scroll.refresh();
+      }
     }
   }
 };

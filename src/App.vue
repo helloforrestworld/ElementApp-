@@ -6,7 +6,9 @@
       <router-link activeClass="nav-active" class="tab-item" tag="div" :to="{ name: 'ratings'}">评论</router-link>
       <router-link activeClass="nav-active" class="tab-item" tag="div" :to="{ name: 'seller'}">商家</router-link>
     </div>
-    <router-view class="content" :seller="seller"></router-view>
+    <keep-alive>
+      <router-view class="content" :seller="seller"></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -18,6 +20,12 @@ export default {
     sellHeader
   },
   created() {
+    // 模拟
+    let search = window.location.search;
+    if (!search) {
+      window.location.search = '?id=zhoufang1411';
+    };
+    this.$store.commit('initSellerId', search); // 初始sellerId
     this.$store.dispatch('getSellerData'); // 请求商家数据
   },
   computed: {
