@@ -17,6 +17,7 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+
 ## 预览
 
 > 
@@ -26,7 +27,9 @@ npm run build --report
 >
 ![此处输入图片的描述][3]
 
+
 ##目录结构
+
 ```
     .
 ├── build                                       // webpack配置文件
@@ -55,7 +58,9 @@ npm run build --report
 .
 
 ```
+
 ## 总结
+
 准备工作
 1.字体图标
 
@@ -360,7 +365,9 @@ npm run build --report
     过程：1.父元素传入数据props初始化
           2.tab-select tabOnly
           3.根据切换返回值过滤数据
+          
 ##TODO
+
 - [ ] 买家模块
     - [ ] 外卖首页
         - [x] 商家页面
@@ -371,3 +378,8 @@ npm run build --report
   [1]: https://ws1.sinaimg.cn/large/e8323205gy1fq70q2srdng20ba0iwkjm.jpg
   [2]: https://ws1.sinaimg.cn/large/e8323205gy1fq70xsx1pjg20ba0iwnpf.jpg
   [3]: https://ws1.sinaimg.cn/large/e8323205gy1fq70qfbdnpg20ba0iw1ky.jpg
+## 参考
+> 
+https://github.com/ustbhuangyi/vue-sell
+https://github.com/helloforrestworld/vue2-elm
+  

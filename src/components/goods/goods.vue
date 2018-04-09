@@ -2,7 +2,7 @@
 <div id="goods">
   <div class="menu-wrapper" ref="menuWrapper">
     <ul>
-      <li class="menu-item" :class="{'currentIndex': index === currentIndex}" v-for="(item, index) in goods" :key="index" @click="clickMenutoScroll(index)">
+      <li class="menu-item" :class="{'currentIndex': index === currentIndex}" v-for="(item, index) in goods" :key="index" @click="clickMenutoScroll(index)" ref="menuList">
         <span class="text border-1px">
             <span class="icon" v-if="item.type>=0" :class = "classMap[item.type]"></span> {{item.name}}
         </span>
@@ -69,6 +69,12 @@ export default {
     this.$store.dispatch('getGoodsData').then(() => {
       this._initFoodScroll();
     });
+    // let _this = this;
+    // window.addEventListener('resize', function() {
+    //   console.log(_this.menuScroll);
+    //   _this.foodsScroll.refresh();
+    //   _this.menuScroll.refresh();
+    // });
   },
   computed: {
     goods() { // 商品数据
@@ -80,6 +86,7 @@ export default {
           return i;
         };
         if (-this.scrollY < this.heights[i]) {
+          this._followScroll(i);
           return i;
         };
       };
@@ -126,6 +133,11 @@ export default {
         this._initScroll();
         this._calculateHeight();
       });
+    },
+    _followScroll(index) { // 目录跟随商品列表移动
+      let menuList = this.$refs.menuList;
+      let list = menuList[index];
+      this.menuScroll.scrollToElement(list, 300, 0);
     }
   }
 };
