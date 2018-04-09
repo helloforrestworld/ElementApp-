@@ -381,5 +381,6 @@ npm run build --report
 ## 参考
 > 
 https://github.com/ustbhuangyi/vue-sell
-https://github.com/helloforrestworld/vue2-elm
+>
+https://github.com/bailicangdu/vue2-elm
   
