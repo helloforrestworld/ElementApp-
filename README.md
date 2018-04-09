@@ -26,6 +26,35 @@ npm run build --report
 >
 ![此处输入图片的描述][3]
 
+##目录结构
+```
+    .
+├── build                                       // webpack配置文件
+├── config                                      // 项目打包路径
+├── src                                         // 项目核心文件
+│   ├── common                                  // 公用资源
+|       └── fonts                               // 字体图标
+|       └── js                                  // 工具函数
+|       └── less                                // 公用样式
+│   ├── components                              // 组件
+|       └── cartcontrol                         // 加入购物车按钮组件
+|       └── fooddatail                          // 商品详情组件
+|       └── goods                               // 商家商品页
+|       └── header                              // 头部组件
+|       └── ratings                             // 商家评论页面
+|       └── ratingselect                        // 评论过滤组件
+|       └── seller                              // 商家详情页
+|       └── shopcart                            // 购物车组件
+|       └── split                               // 分割线小组件
+|       └── star                                // 评分星星组件
+|   ├── router                                  // 路由
+|   ├── store                                   // vuex
+│   ├── App.vue                                 // 页面入口文件
+│   ├── main.js                                 // 程序入口文件，加载各种公共组件
+├── index.html                                  // 模板html文件
+.
+
+```
 ## 总结
 准备工作
 1.字体图标
@@ -331,7 +360,13 @@ npm run build --report
     过程：1.父元素传入数据props初始化
           2.tab-select tabOnly
           3.根据切换返回值过滤数据
-
+##TODO
+- [ ] 买家模块
+    - [ ] 外卖首页
+        - [x] 商家页面
+    - [ ] 订单页
+    - [ ] 个人中心
+- [ ] 后台管理
 
   [1]: https://ws1.sinaimg.cn/large/e8323205gy1fq70q2srdng20ba0iwkjm.jpg
   [2]: https://ws1.sinaimg.cn/large/e8323205gy1fq70xsx1pjg20ba0iwnpf.jpg
