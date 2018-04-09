@@ -334,5 +334,5 @@ npm run build --report
 
 
   [1]: https://ws1.sinaimg.cn/large/e8323205gy1fq70q2srdng20ba0iwkjm.jpg
-  [2]: https://ws1.sinaimg.cn/large/e8323205gy1fq70q9q7p1g20ba0iw1l1.jpg
+  [2]: https://ws1.sinaimg.cn/large/e8323205gy1fq70xsx1pjg20ba0iwnpf.jpg
   [3]: https://ws1.sinaimg.cn/large/e8323205gy1fq70qfbdnpg20ba0iw1ky.jpg
