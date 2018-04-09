@@ -2,7 +2,7 @@ export function urlParse(search) { // '?aa=bb' => {aa:bb}
   let reg = /[?&][^?&]+=[^?&]+/g;
   let arr = [];
   let ret = {};
-  arr = search.match(reg, search);
+  arr = search.match(reg);
   // ["?id=zhoufang1411"]
   arr.forEach((item) => {
     item = item.substr(1).split('=');
