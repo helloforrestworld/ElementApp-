@@ -70,7 +70,7 @@ npm run build --report
     a.入口main.js全局引入less
     b.mixin文件需要单独@import
 3.1pxborder 背景图引入
-
+```javascript
     a. .boreder-1px(@color:red){
             position:relative
             &::after{
@@ -104,7 +104,7 @@ npm run build --report
             background-image:~'url(@{url}@3x.png)';
             }
         }
-        
+```        
 4.reset.css
 
     static/css/reset.css
@@ -122,7 +122,9 @@ npm run build --report
 
 
 9. backdrop-filter:blur(10px);   /* iphone独有 */
+
 10.stick-footer stick-footer
+```javascript
     fixWrapper{
         overflow:hidden;
         innerWrap{
@@ -135,6 +137,7 @@ npm run build --report
             margin-top: 负一定的高度 
         }
     }
+```
 11. food组件左右列表相关联 
 
 
@@ -158,7 +161,7 @@ npm run build --report
         }
 13.小球飞入实现
 
-```
+```javascript
  1.定义属性
     balls: [ // 购物车小球 
       {show: false},
@@ -233,7 +236,7 @@ npm run build --report
 ```
 14.一些工具函数封装
 
-```
+```javascript
     // formatDate(date,'yyyy-MM-dd') 日期格式化
     function formatDate(date,fmt){
         if(/(y+)/.test(fmt)) { //年份
@@ -315,7 +318,7 @@ npm run build --report
     LENGTH:5 //默认是五颗星
     结构：
     
-    ```
+    ```javascript
         <div class="star" :class="starType">
             <span v-for="(itemClass,index) in itemClasses" :class="itemClass" class="star-item" :key="index">
             </span>
@@ -326,7 +329,7 @@ npm run build --report
     
 计算itemClasses:
 
-    ```
+    ```javascript
         问题：半星何时出现 余数大于.5
         var score = Math.floor(this.score*2)/2;
         var havaHalf = score%1 !== 0; //是否加半星
