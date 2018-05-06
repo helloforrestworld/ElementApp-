@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+**电脑端预览： 切换调式模式 刷新后才能正常滚动**
+
 ## Build Setup
 
 ``` bash
